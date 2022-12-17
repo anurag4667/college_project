@@ -5,15 +5,21 @@
 
 // global variables for the food categories
 char indian [5][100] = {"Dal makhani","Roti/Naan","Butter chicken","aloo gobhi","fish curry"};
+
 char chinese [5][100] = {"Egg fried rice","Haka noodles","Peeking Duck","Dumplings","Rice , miso soup"};
+
 char italian [5][100] = {"Pizza","lasagne","pasta","risotto","arancini"};
+
 char mexican [5][100] = {"Tacos","Burrito","Chilaquiles","Pozole","Enchiladas"};
+
 char fastfood [5][100] = {"Cheese burger","French Fries","Hot dog","Fried chicken","Cold coffee"};
 
 struct restaurant{
 char name[100];
+
 char type[100];
 char (*food)[100];
+
 int rate[5];
 };
 
@@ -75,10 +81,15 @@ else{
 }
 while(true){
 printf("CHOOSE RESTAURANTS CATEGORY \n");
+
 printf("1.INDIAN\n");
+
 printf("2.CHINESE\n");
+
 printf("3.ITALIAN\n");
+
 printf("4.MEXICAN\n");
+
 printf("5.FASTFOOD\n");
 int choise;
 scanf("%d",&choise);
@@ -161,16 +172,20 @@ return false;
 // gives the restaurants structure
 struct restaurant giverestaurant(int n){
 FILE *fptr;
+
 struct restaurant rest;
 if((fptr = fopen("restaurants.bin","rb")) == NULL){
+
     printf("error opening file\n");
     exit(1);
 }
 int i;
 for(i = 1; i <= n; i++){
+
     fread(&rest,sizeof(struct restaurant),1,fptr);
 }
 fclose(fptr);
+
 return rest;
 }
 //view restaurant and gives the index
@@ -178,14 +193,19 @@ int viewrestaurant(){
 FILE *fptr;
 struct restaurant rest;
 if((fptr = fopen("restaurants.bin","rb")) == NULL){
+
     printf("error opening file\n");
+
     exit(1);
 }
 printf("sno\trestaurant\tcategory\n");
 int i = 1;
 while(fread(&rest,sizeof(struct restaurant),1,fptr)){
+
     printf("%d\t",i);
+
     printf("%s\t%s\n",rest.name,rest.type);
+
     i++;
 }
 fclose(fptr);
@@ -200,13 +220,18 @@ int menu(struct restaurant rest){
     }
     while(true){
     printf("SELECT THE FOOD NO. IF YOU WANT TO GO BACK TYPE -1\n");
+
     int choise;
+
     scanf("%d",&choise);
     if(choise >= 1 && choise <= 5){
         total += rest.rate[choise-1];
+
         printf("BILL = %d\n",total);
         printf("IF YOU WANT TO MORE CHECK OUT TYPE 1 OR PRESS 0 TO CONTINUE\n");
+
         int ch;
+
         scanf("%d",&ch);
         if(ch == 1){
             return total;
@@ -230,6 +255,11 @@ printf("3.EXIT\n");
 scanf("%d",&choise);
 int bill = 0;
 if(choise == 1){
+    char name[100];
+    scanf("%s",&name);
+
+    if(searchid(name)){
+
     while(true){
     int total = viewrestaurant();
     printf("SELECT THE RESTAURANT :\n");
@@ -255,17 +285,37 @@ if(choise == 1){
         printf("WRONG CHOISE CHOOSE AGAIN\n");
     }
 
+    }}
+
+    else{
+        printf("THE ID DOES NOT EXIST DO YOU WANT TO CREATE IT? PRESS 1\n");
+        int ch;
+        scanf("%d",&ch);
+        if(ch){
+            struct customer cst;
+
+            strcpy(cst.id,name);
+
+            addid(cst);
+        }
     }
 }
 else if(choise == 2){
+
     addrestaurant();
 }
 else if(choise == 3){
+
     break;
 }
 else{
-    printf("WORNG CHOISE \n");
+
+    printf("WRONG CHOISE \n");
+
 }
+
 }
+
 }
+
 
